@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public ParticleSystem explosionPacticle;
+    public AudioClip explosionSound;
+    public GameObject mainCamera;
     private float verticalInput;
     private float horizontalInput;
     [SerializeField] float speed;
     private float zTopBound = 29;
-    private float zLowerBound = -3;
+    private float zLowerBound = -2.5f;
     private float xRange = 18.5f;
+    private float yBound = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +49,21 @@ public class PlayerController : MonoBehaviour
         if (transform.position.x > xRange)
         {
             transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
+        }
+        if (transform.position.y < yBound)
+        {
+            transform.position = new Vector3(transform.position.x, yBound, transform.position.z);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.GetComponent<Vehicle>())
+        {
+            explosionPacticle.transform.position = collision.gameObject.transform.position;
+            explosionPacticle.Play();
+            AudioSource.PlayClipAtPoint(explosionSound, mainCamera.transform.position);
+            Destroy(collision.gameObject, 0.1f);
         }
     }
 }
