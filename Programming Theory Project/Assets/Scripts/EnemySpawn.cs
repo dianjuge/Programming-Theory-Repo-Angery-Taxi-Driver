@@ -6,6 +6,8 @@ public class EnemySpawn : MonoBehaviour
 {
     public GameObject[] enemyPrefabs;
     public GameObject[] passengerPrefabs;
+    public GameObject[] getOffLocationPrefabs;
+
     private float zPos = 40;
     private float xBound = 18.5f;
     private float startDelay = 2;
@@ -17,12 +19,16 @@ public class EnemySpawn : MonoBehaviour
     float leftSideLeftBound = -24.0f;
     float leftSideRightBound = -21.0f;
     float xRangePassenger;
-        
+
+    float xGetOffLocation = 22.44f;
+    float xGetOffLocationPos;
+    float zGetOffLocationRange;
     // Start is called before the first frame update
     void Start()
     {
         InvokeRepeating("SpawnEnemies", startDelay, spawnRate);
         InvokeRepeating("SpawnPassengers", passengerStartDelay, spawnRate);
+        //InvokeRepeating("SpawnGetOffLocation", passengerStartDelay, spawnRate);
     }
 
     // Update is called once per frame
@@ -54,6 +60,24 @@ public class EnemySpawn : MonoBehaviour
         }
         Vector3 spawnPos = new Vector3(xRangePassenger, 0, zPos);
         Instantiate(passengerPrefabs[index], spawnPos, passengerPrefabs[index].transform.rotation);
-        InvokeRepeating("SpawnPassengers", passengerStartDelay, spawnRate);
+    }
+
+    public void SpawnGetOffLocation()
+    {
+        int index = Random.Range(0, getOffLocationPrefabs.Length);
+        int xDirection = Random.Range(0, 2);
+
+        if (xDirection == 1)
+        {
+            xGetOffLocationPos = xGetOffLocation;
+        }
+        else if (xDirection == 0)
+        {
+            xGetOffLocationPos = -xGetOffLocation;
+        }
+        zGetOffLocationRange = Random.Range(-3.0f, 29.0f);
+        Vector3 spawnPos = new Vector3(xGetOffLocationPos, 0, zGetOffLocationRange);
+        Instantiate(getOffLocationPrefabs[index], spawnPos, getOffLocationPrefabs[index].transform.rotation);
+        InvokeRepeating("SpawnGetOffLocation", passengerStartDelay, spawnRate);
     }
 }
