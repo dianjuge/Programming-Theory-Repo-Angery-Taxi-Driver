@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class CountDownManagement : MonoBehaviour
 {
-    public bool isArrived = false;
     private float countDownRange;
-    private float countDownTime;
+    private float[] countDownTime = new float[4];
     private float travelingTimeTopLimit = 5.0f;
-    private float travelingTimeLowerLimit = 10.0f;
-    private int passengerNumber;
+    private float travelingTimeLowerLimit = 10.0f;  
     public int PassengerNumer { get; set; }
     // Start is called before the first frame update
     void Start()
@@ -22,27 +20,27 @@ public class CountDownManagement : MonoBehaviour
     {
         
     }
-    private void PassengerArriveCountDown()
-    {
 
-        GameObject.Find("Player").GetComponent<PlayerController>().ArriveCountDown.text = "P" + passengerNumber + "ArrCD" + ": " + countDownTime;
-        countDownTime--;
-        if (countDownTime > 0)
+    IEnumerator PassengerArriveCountDown(int i)
+    {
+        yield return new WaitForSeconds(1);
+        countDownTime[i]--;
+        GameObject.Find("Player").GetComponent<PlayerController>().ArriveCountDownText[i].text = "P" + (i + 1) + " CD" + ": " + countDownTime[i];      
+        if (countDownTime[i] > 0)
         {
-            InvokeRepeating("PassengerArriveCountDown", 1, 0);
+            StartCoroutine(PassengerArriveCountDown(i));
         }
-        else if(!isArrived)
+        else
         {
-            isArrived = true;
-            GameObject.Find("SpawnManagement").GetComponent<EnemySpawn>().SpawnGetOffLocation();
+            GameObject.Find("SpawnManagement").GetComponent<EnemySpawn>().SpawnGetOffLocation(i);
         }
     }
 
-    public void RandomTravelingTime()
+    public void RandomTravelingTime(int i)
     {
-        isArrived = false;
         countDownRange = Random.Range(travelingTimeLowerLimit, travelingTimeTopLimit);
-        countDownTime = (int)countDownRange;
-        PassengerArriveCountDown();
+        countDownTime[i] = (int)countDownRange;
+        GameObject.Find("Player").GetComponent<PlayerController>().ArriveCountDownText[i].text = "P" + (i + 1) + " CD" + ": " + countDownTime[i];
+        StartCoroutine(PassengerArriveCountDown(i));
     }
 }

@@ -60,9 +60,10 @@ public class EnemySpawn : MonoBehaviour
         }
         Vector3 spawnPos = new Vector3(xRangePassenger, 0, zPos);
         Instantiate(passengerPrefabs[index], spawnPos, passengerPrefabs[index].transform.rotation);
+        InvokeRepeating("SpawnPassengers", passengerStartDelay, spawnRate);
     }
 
-    public void SpawnGetOffLocation()
+    public void SpawnGetOffLocation(int i)
     {
         int index = Random.Range(0, getOffLocationPrefabs.Length);
         int xDirection = Random.Range(0, 2);
@@ -78,6 +79,6 @@ public class EnemySpawn : MonoBehaviour
         zGetOffLocationRange = Random.Range(-3.0f, 29.0f);
         Vector3 spawnPos = new Vector3(xGetOffLocationPos, 0, zGetOffLocationRange);
         Instantiate(getOffLocationPrefabs[index], spawnPos, getOffLocationPrefabs[index].transform.rotation);
-        InvokeRepeating("SpawnGetOffLocation", passengerStartDelay, spawnRate);
+        FindObjectOfType<Location>().GetPassengerID(i);
     }
 }

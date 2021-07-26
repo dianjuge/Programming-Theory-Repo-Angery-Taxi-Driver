@@ -16,7 +16,8 @@ public class PlayerController : MonoBehaviour
     public GameObject countDownManagement;
     public Slider healthSlider;
     public TextMeshProUGUI passengerNumText;
-    public TextMeshProUGUI ArriveCountDown;
+    public TextMeshProUGUI incomeText;
+    public TextMeshProUGUI[] ArriveCountDownText;
 
     private float verticalInput;
     private float horizontalInput;
@@ -24,9 +25,11 @@ public class PlayerController : MonoBehaviour
     private float zLowerBound = -2.5f;
     private float xRange = 18.5f;
     private float yBound = 0;
+    private float income = 0;
+    private float passengerfees = 100;
     private int passengerNum = 0;
-    private float[] ArriveCountDownTime;
-
+    public bool[] HasPassenger { get; private set; } = new bool[4];
+    
     [SerializeField] float speed;
     [SerializeField] float health = 10;
     public float Health 
@@ -98,19 +101,28 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Passenger") && passengerNum < 4)
+        if (other.gameObject.CompareTag("Passenger"))
         {
-            passengerNum++;
-            AudioSource.PlayClipAtPoint(pickUpSound, mainCamera.transform.position);
-            countDownManagement.GetComponent<CountDownManagement>().PassengerNumer = passengerNum;
-            countDownManagement.GetComponent<CountDownManagement>().RandomTravelingTime();
-            Destroy(other.gameObject);
-            
-            passengerNumText.text = "PN: " + passengerNum + " / 4";                 
+            for(int i = 0; i < HasPassenger.Length; i++)
+            {
+                if(!HasPassenger[i])
+                {
+                    HasPassenger[i] = true;
+                    passengerNum++;
+                    AudioSource.PlayClipAtPoint(pickUpSound, mainCamera.transform.position);                   
+                    countDownManagement.GetComponent<CountDownManagement>().RandomTravelingTime(i);
+                    Destroy(other.gameObject);
+
+                    passengerNumText.text = "PN: " + passengerNum + " / 4";
+                    break;
+                }
+            }
+                         
         }
 
         if (other.gameObject.CompareTag("GetOffLocation"))
         {
+            int i = other.gameObject.GetComponent<Location>().PassengerID;
             Destroy(other.gameObject);
             //AudioSource.PlayClipAtPoint(getOffSound1, mainCamera.transform.position);
             AudioSource.PlayClipAtPoint(getOffSound2, mainCamera.transform.position);
@@ -118,8 +130,16 @@ public class PlayerController : MonoBehaviour
             {
                 passengerNum--;
                 passengerNumText.text = "PN: " + passengerNum + " / 4";
-            } 
+            }
+            HasPassenger[i] = false;
+            PassengerIsArrived(i);
+            income += passengerfees;
+            incomeText.text = "Income: $" + income;
         }
     }
-       
+    private void PassengerIsArrived(int i)
+    {
+
+        GameObject.Find("Player").GetComponent<PlayerController>().ArriveCountDownText[i].text = "P" + (i + 1) + " has arrived! ";
+    }
 }
