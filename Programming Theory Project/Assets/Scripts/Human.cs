@@ -5,14 +5,14 @@ using TMPro;
 
 public class Human : MonoBehaviour
 {
-    
+    private GroundRepeat groundRepeat;
 
     [SerializeField] float speed;
    
     // Start is called before the first frame update
     void Start()
     {
-        
+       
 
     }
 
@@ -23,7 +23,7 @@ public class Human : MonoBehaviour
     }
     protected virtual void MoveForward()
     {
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        transform.Translate(Vector3.forward *  (speed + GroundRepeat.groundSpeed) * Time.deltaTime);
     }
 
     

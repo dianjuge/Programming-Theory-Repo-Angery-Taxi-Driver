@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Vehicle : MonoBehaviour
 {
+    private GroundRepeat groundRepeat;
     private Rigidbody vehicleRb;
     private PlayerController playerController;
     [SerializeField] float speed;
@@ -23,7 +24,7 @@ public class Vehicle : MonoBehaviour
     protected virtual void MoveForward()
     {
         vehicleRb = gameObject.GetComponent<Rigidbody>();
-        vehicleRb.AddForce(Vector3.back * speed);
+        vehicleRb.AddForce(Vector3.back * (speed + GroundRepeat.groundSpeed));
     }
 
     public virtual void DealDamage()

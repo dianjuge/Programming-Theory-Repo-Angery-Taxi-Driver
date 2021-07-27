@@ -342,7 +342,7 @@ MonoBehaviour:
   - {fileID: 1739422619}
   - {fileID: 183088783}
   - {fileID: 886747327}
-  speed: 0.5
+  speed: 0.15
   health: 10
 --- !u!54 &107315338
 Rigidbody:
@@ -610,7 +610,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea2fd52ac83686b418b76e10d88be126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
 --- !u!198 &257058698 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 7812795601913680097, guid: 2ffe08b71497bea41b5d5a5475ba5428, type: 3}
@@ -1153,7 +1152,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d70999ba737574c808b1d37cbdca0c37, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.05
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2169,24 +2168,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &1719490156 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7852777591297874807, guid: 579501e0ec1a1884bbca8918ae86f098, type: 3}
-  m_PrefabInstance: {fileID: 8042807743239843661}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1719490161
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1719490156}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 10, y: 2.220446e-16, z: 10}
-  m_Center: {x: 0, y: 0, z: -0.00000023841858}
 --- !u!1 &1739422617
 GameObject:
   m_ObjectHideFlags: 0
@@ -2947,6 +2928,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -3
       objectReference: {fileID: 0}
+    - target: {fileID: 5689889033783032810, guid: 579501e0ec1a1884bbca8918ae86f098, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 49658c6e81bdb5542adfcb43a4324d86, type: 2}
     - target: {fileID: 8042807743601132608, guid: 579501e0ec1a1884bbca8918ae86f098, type: 3}
       propertyPath: m_Name
       value: Ground

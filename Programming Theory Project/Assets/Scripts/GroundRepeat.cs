@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class GroundRepeat : MonoBehaviour
 {
-    [SerializeField] float speed;
+    public const float groundSpeed = 10;
+    
     Vector3 originPoz;
     // Start is called before the first frame update
     void Start()
@@ -15,8 +16,7 @@ public class GroundRepeat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GameObject.Find("Ground").transform.Translate(Vector3.back * Time.deltaTime * speed);
-        Debug.Log(gameObject.GetComponent<BoxCollider>().size.z);
+        transform.Translate(Vector3.back * Time.deltaTime * groundSpeed);
         if (originPoz.z - transform.position.z > gameObject.GetComponent<BoxCollider>().size.z / 2)
         {
             transform.position = originPoz;

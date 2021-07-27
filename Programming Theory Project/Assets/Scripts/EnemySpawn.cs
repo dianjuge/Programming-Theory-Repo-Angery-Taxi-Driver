@@ -28,7 +28,6 @@ public class EnemySpawn : MonoBehaviour
     {
         InvokeRepeating("SpawnEnemies", startDelay, spawnRate);
         InvokeRepeating("SpawnPassengers", passengerStartDelay, spawnRate);
-        //InvokeRepeating("SpawnGetOffLocation", passengerStartDelay, spawnRate);
     }
 
     // Update is called once per frame
