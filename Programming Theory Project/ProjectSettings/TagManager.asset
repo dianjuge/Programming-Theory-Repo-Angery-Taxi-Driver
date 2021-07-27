@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Passenger
   - GetOffLocation
+  - Food
   layers:
   - Default
   - TransparentFX
