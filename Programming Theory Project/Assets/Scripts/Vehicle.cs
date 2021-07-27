@@ -8,7 +8,7 @@ public class Vehicle : MonoBehaviour
     private Rigidbody vehicleRb;
     private PlayerController playerController;
     [SerializeField] float speed;
-    private float damagePoint = 2.0f;
+    private float damagePoint = -2.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,8 +23,12 @@ public class Vehicle : MonoBehaviour
 
     protected virtual void MoveForward()
     {
-        vehicleRb = gameObject.GetComponent<Rigidbody>();
-        vehicleRb.AddForce(Vector3.back * (speed + GroundRepeat.groundSpeed));
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+        if (!playerController.IsGameOver)
+        {
+            vehicleRb = gameObject.GetComponent<Rigidbody>();
+            vehicleRb.AddForce(Vector3.back * (speed + GroundRepeat.groundSpeed));
+        }
     }
 
     public virtual void DealDamage()

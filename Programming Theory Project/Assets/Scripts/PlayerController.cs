@@ -14,10 +14,12 @@ public class PlayerController : MonoBehaviour
 
     public GameObject mainCamera;
     public GameObject countDownManagement;
+    public GameObject gameOver;
     public Slider healthSlider;
     public TextMeshProUGUI passengerNumText;
     public TextMeshProUGUI incomeText;
     public TextMeshProUGUI[] ArriveCountDownText;
+    
 
     private float verticalInput;
     private float horizontalInput;
@@ -28,8 +30,10 @@ public class PlayerController : MonoBehaviour
     private float income = 0;
     private float passengerfees = 100;
     private int passengerNum = 0;
+    private bool isGameOver;
     public bool[] HasPassenger { get; private set; } = new bool[4];
-    
+    public bool IsGameOver { get; private set; }
+
     [SerializeField] float speed;
     [SerializeField] float health = 10;
     public float Health 
@@ -40,7 +44,7 @@ public class PlayerController : MonoBehaviour
         }
         set
         {
-            health -= value;
+            health += value;
         }
     }
 
@@ -58,11 +62,13 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.right * speed * horizontalInput);
-        transform.Translate(Vector3.forward * speed * verticalInput);
-
+        if (!IsGameOver)
+        {
+            horizontalInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
+            transform.Translate(Vector3.right * speed * horizontalInput);
+            transform.Translate(Vector3.forward * speed * verticalInput);
+        }
         if (transform.position.z > zTopBound)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, zTopBound);
@@ -96,11 +102,25 @@ public class PlayerController : MonoBehaviour
             explosionPacticle.Play();
             AudioSource.PlayClipAtPoint(explosionSound, mainCamera.transform.position);
             Destroy(collision.gameObject, 0.1f);
+
+            //if player's health is below zero, then game over;
+            if (health <= 0)
+            {
+                //gameOver.SetActive(true);
+                //IsGameOver = true;
+            }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if(other.gameObject.CompareTag("Food"))
+        {
+            Food food = other.gameObject.GetComponent<Food>();
+            food.HealthRegain();
+            healthSlider.value = health;
+            Destroy(other.gameObject);
+        }
         if (other.gameObject.CompareTag("Passenger"))
         {
             for(int i = 0; i < HasPassenger.Length; i++)

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CountDownManagement : MonoBehaviour
 {
+    private PlayerController playerController;
+
     private float countDownRange;
     private float[] countDownTime = new float[4];
     private float travelingTimeTopLimit = 5.0f;
@@ -12,7 +14,7 @@ public class CountDownManagement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -26,7 +28,7 @@ public class CountDownManagement : MonoBehaviour
         yield return new WaitForSeconds(1);
         countDownTime[i]--;
         GameObject.Find("Player").GetComponent<PlayerController>().ArriveCountDownText[i].text = "P" + (i + 1) + " CD" + ": " + countDownTime[i];      
-        if (countDownTime[i] > 0)
+        if (countDownTime[i] > 0 && !playerController.IsGameOver)
         {
             StartCoroutine(PassengerArriveCountDown(i));
         }
