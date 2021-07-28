@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
@@ -27,5 +28,16 @@ public class UIController : MonoBehaviour
                 GameObject.Find("Fill Area").SetActive(false);
             } 
         }
+    }
+    public void Retry()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void BackToMenu()
+    {
+        GameObject data = GameObject.Find("DataTransit");
+        Destroy(data);
+        SceneManager.LoadScene(0);
     }
 }

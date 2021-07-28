@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GroundRepeat : MonoBehaviour
 {
-    public const float groundSpeed = 10;
+    public float GroundSpeed { get; set; }
 
     private PlayerController playerController;
     Vector3 originPoz;
@@ -18,9 +18,12 @@ public class GroundRepeat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
+        GroundSpeed = DataTransit.SpeedTransit;
+
         if (!playerController.IsGameOver)
         {
-            transform.Translate(Vector3.back * Time.deltaTime * groundSpeed);
+            transform.Translate(Vector3.back * Time.deltaTime * GroundSpeed);
             if (originPoz.z - transform.position.z > gameObject.GetComponent<BoxCollider>().size.z / 2)
             {
                 transform.position = originPoz;

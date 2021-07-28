@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public Slider healthSlider;
     public TextMeshProUGUI passengerNumText;
     public TextMeshProUGUI incomeText;
+    public TextMeshProUGUI healthPointText;
     public TextMeshProUGUI[] ArriveCountDownText;
     
 
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] float speed;
     [SerializeField] float health = 10;
+    [SerializeField] float maxHealth = 10;
     public float Health 
     {
         get
@@ -44,7 +46,14 @@ public class PlayerController : MonoBehaviour
         }
         set
         {
-            health += value;
+            if (health <= maxHealth)
+            {
+                health += value;
+            }
+            if (health > maxHealth)
+            {
+                health = maxHealth;
+            }
         }
     }
 
@@ -98,6 +107,7 @@ public class PlayerController : MonoBehaviour
             Vehicle vehicle = collision.gameObject.GetComponent<Vehicle>();
             vehicle.DealDamage();
             healthSlider.value = health;
+            healthPointText.text = health + " / " + maxHealth;
             explosionPacticle.transform.position = collision.gameObject.transform.position;
             explosionPacticle.Play();
             AudioSource.PlayClipAtPoint(explosionSound, mainCamera.transform.position);
@@ -106,8 +116,8 @@ public class PlayerController : MonoBehaviour
             //if player's health is below zero, then game over;
             if (health <= 0)
             {
-                //gameOver.SetActive(true);
-                //IsGameOver = true;
+                gameOver.SetActive(true);
+                IsGameOver = true;
             }
         }
     }
@@ -119,6 +129,7 @@ public class PlayerController : MonoBehaviour
             Food food = other.gameObject.GetComponent<Food>();
             food.HealthRegain();
             healthSlider.value = health;
+            healthPointText.text = health + " / " + maxHealth;
             Destroy(other.gameObject);
         }
         if (other.gameObject.CompareTag("Passenger"))
@@ -152,6 +163,7 @@ public class PlayerController : MonoBehaviour
                 passengerNumText.text = "PN: " + passengerNum + " / 4";
             }
             HasPassenger[i] = false;
+            GameObject.Find("CountDownManagement").GetComponent<CountDownManagement>().ChangeSinalColorsToGreen(i);
             PassengerIsArrived(i);
             income += passengerfees;
             incomeText.text = "Income: $" + income;
@@ -160,6 +172,6 @@ public class PlayerController : MonoBehaviour
     private void PassengerIsArrived(int i)
     {
 
-        GameObject.Find("Player").GetComponent<PlayerController>().ArriveCountDownText[i].text = "P" + (i + 1) + " has arrived! ";
+        GameObject.Find("Player").GetComponent<PlayerController>().ArriveCountDownText[i].text = "P" + (i + 1) + "        Has Arrived! ";
     }
 }

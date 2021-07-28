@@ -23,9 +23,10 @@ public class Human : MonoBehaviour
     }
     protected virtual void MoveForward()
     {
+        groundRepeat = GameObject.Find("Ground").GetComponent<GroundRepeat>();
         if (!playerController.IsGameOver)
         {
-            transform.Translate(Vector3.forward * (speed + GroundRepeat.groundSpeed) * Time.deltaTime);
+            transform.Translate(Vector3.forward * (speed + groundRepeat.GroundSpeed) * Time.deltaTime);
         }
     }
 

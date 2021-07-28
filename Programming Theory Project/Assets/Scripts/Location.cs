@@ -5,6 +5,7 @@ using UnityEngine;
 public class Location : MonoBehaviour
 {
     private int passengerID;
+    private float rotateSpeed = 200;
     public int PassengerID { get; private set; }
     // Start is called before the first frame update
     void Start()
@@ -15,11 +16,15 @@ public class Location : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Rotation();
     }
 
     public void GetPassengerID(int i)
     {
         PassengerID = i;
+    }
+    protected void Rotation()
+    {
+        transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime);
     }
 }

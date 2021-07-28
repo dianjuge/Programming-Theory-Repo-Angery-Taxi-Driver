@@ -9,6 +9,7 @@ public class Vehicle : MonoBehaviour
     private PlayerController playerController;
     [SerializeField] float speed;
     private float damagePoint = -2.0f;
+    private bool isDamaged;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,16 +25,21 @@ public class Vehicle : MonoBehaviour
     protected virtual void MoveForward()
     {
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+        groundRepeat = GameObject.Find("Ground").GetComponent<GroundRepeat>();
         if (!playerController.IsGameOver)
         {
             vehicleRb = gameObject.GetComponent<Rigidbody>();
-            vehicleRb.AddForce(Vector3.back * (speed + GroundRepeat.groundSpeed));
+            vehicleRb.AddForce(Vector3.back * (speed + groundRepeat.GroundSpeed));
         }
     }
 
     public virtual void DealDamage()
     {
-        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
-        playerController.Health = damagePoint;
+        if (!isDamaged)
+        {
+            playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+            playerController.Health = damagePoint;
+            isDamaged = true;
+        }    
     }
 }
