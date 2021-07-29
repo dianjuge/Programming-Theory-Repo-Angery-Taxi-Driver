@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI incomeText;
     public TextMeshProUGUI healthPointText;
     public TextMeshProUGUI[] ArriveCountDownText;
-    
+
 
     private float verticalInput;
     private float horizontalInput;
@@ -28,12 +28,14 @@ public class PlayerController : MonoBehaviour
     private float zLowerBound = -2.5f;
     private float xRange = 18.5f;
     private float yBound = 0;
-    private float income = 0;
+    private float income;
     private float passengerfees = 100;
     private int passengerNum = 0;
     private bool isGameOver;
-    public bool[] HasPassenger { get; private set; } = new bool[4];
-    public bool IsGameOver { get; private set; }
+
+    public float Income { get; private set; } = 0;
+    public bool[] HasPassenger { get; private set; } = new bool[4];     //ENCAPSULATION
+    public bool IsGameOver { get; private set; }    //ENCAPSULATION
 
     [SerializeField] float speed;
     [SerializeField] float health = 10;
@@ -66,10 +68,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Income:" + Income);
         Move();
     }
 
-    private void Move()
+    private void Move()     //ABSTRACTION
     {
         if (!IsGameOver)
         {
@@ -118,6 +121,9 @@ public class PlayerController : MonoBehaviour
             {
                 gameOver.SetActive(true);
                 IsGameOver = true;
+                UIController uIController = GameObject.Find("Canvas").GetComponent<UIController>();
+                uIController.RecordBestScore();
+                uIController.ShowBestScore();
             }
         }
     }
@@ -165,8 +171,8 @@ public class PlayerController : MonoBehaviour
             HasPassenger[i] = false;
             GameObject.Find("CountDownManagement").GetComponent<CountDownManagement>().ChangeSinalColorsToGreen(i);
             PassengerIsArrived(i);
-            income += passengerfees;
-            incomeText.text = "Income: $" + income;
+            Income += passengerfees;
+            incomeText.text = "Income: $" + Income;
         }
     }
     private void PassengerIsArrived(int i)

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bus : Vehicle
 {
+    private float busDamagePoint = -4.0f;     //INHERITANCE
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +15,15 @@ public class Bus : Vehicle
     void Update()
     {
         MoveForward();
+    }
+
+    public override void DealDamage()   //POLYMORPHYSIM
+    {
+        if (!isDamaged)
+        {
+            playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+            playerController.Health = busDamagePoint;
+            isDamaged = true;
+        }
     }
 }

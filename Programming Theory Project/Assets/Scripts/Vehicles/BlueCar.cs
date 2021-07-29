@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlueCar : Vehicle
+public class BlueCar : Vehicle  //INHERITANCE
 {
+    private float blueCarDamagePoint = -2.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +15,15 @@ public class BlueCar : Vehicle
     void Update()
     {
         MoveForward();
+    }
+
+    public override void DealDamage()   //POLYMORPHYSIM
+    {
+        if (!isDamaged)
+        {
+            playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+            playerController.Health = blueCarDamagePoint;
+            isDamaged = true;
+        }
     }
 }
